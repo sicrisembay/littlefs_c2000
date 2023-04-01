@@ -3,6 +3,7 @@
  */
 
 #include <xdc/std.h>
+#include <xdc/runtime/Error.h>
 #include <xdc/runtime/System.h>
 #include <xdc/runtime/Types.h>
 #include <ti/sysbios/BIOS.h>
@@ -10,18 +11,7 @@
 #include <ti/sysbios/knl/Clock.h>
 #include "DSP2833x_Device.h"
 #include "driver_def.h"
-
-/*
- *  ======== taskFxn ========
- */
-Void taskFxn(UArg a0, UArg a1)
-{
-    System_printf("enter taskFxn()\n");
-	
-    Task_sleep(10);
-	
-    System_printf("exit taskFxn()\n");
-}
+#include "../driver/uart/uart.h"
 
 
 extern unsigned int RamfuncsLoadStart;
@@ -30,6 +20,41 @@ extern unsigned int RamfuncsRunStart;
 extern unsigned int RamConstLoadStart;
 extern unsigned int RamConstLoadEnd;
 extern unsigned int RamConstRunStart;
+
+
+/*
+ *  ======== taskFxn ========
+ */
+Void taskFxn(UArg a0, UArg a1)
+{
+    uint16_t blink_counter = 0;
+
+    EALLOW;
+    GpioCtrlRegs.GPBMUX1.bit.GPIO34 = 0;
+    GpioCtrlRegs.GPBDIR.bit.GPIO34 = 1;
+    GpioCtrlRegs.GPBPUD.bit.GPIO34 = 1;
+    EDIS;
+    GpioDataRegs.GPBSET.bit.GPIO34 = 1; // LED off
+
+    UART_init();
+
+    System_printf("running taskFxn()\n");
+
+    while(1) {
+        Task_sleep(1);
+
+        blink_counter++;
+
+        if(blink_counter < 200) {
+            GpioDataRegs.GPBCLEAR.bit.GPIO34 = 1;
+        } else if(blink_counter < 2000) {
+            GpioDataRegs.GPBSET.bit.GPIO34 = 1;
+        } else {
+            blink_counter = 0;
+        }
+
+    }
+}
 
 
 #pragma CODE_SECTION(InitFlashWaitState, "ramfuncs");
@@ -149,6 +174,10 @@ static void CLOCK_init(void)
  */
 Int main()
 {
+    Task_Handle task;
+    Task_Params tskParams;
+    Error_Block eb;
+
     /*
      * Copy ramfuncs section
      */
@@ -163,11 +192,26 @@ Int main()
 
     CLOCK_init();
 
-    /*
-     * use ROV->SysMin to view the characters in the circular buffer
-     */
     System_printf("enter main()\n");
-	
+
+    Error_init(&eb);
+    Task_Params_init(&tskParams);
+    tskParams.priority = 1;
+    tskParams.stackSize = 512;
+    task = Task_create(taskFxn, &tskParams, &eb);
+    if (task == NULL) {
+        System_printf("Task_create() failed!\n");
+        BIOS_exit(0);
+    }
+
     BIOS_start();    /* does not return */
     return(0);
 }
+
+
+void SysPutch(char ch)
+{
+    UART_send(UART_A, &ch, 1);
+}
+
+

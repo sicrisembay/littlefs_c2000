@@ -42,6 +42,16 @@
 			<locationURI>PARENT-1-PROJECT_LOC/driver/f2833x/v142</locationURI>
 		</link>
 		<link>
+			<name>driver/ringbuf</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/driver/utility/ringbuf</locationURI>
+		</link>
+		<link>
+			<name>driver/uart</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/driver/uart</locationURI>
+		</link>
+		<link>
 			<name>littlefs/lfs.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/littlefs/lfs.c</locationURI>
