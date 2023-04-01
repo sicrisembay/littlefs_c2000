@@ -9,7 +9,7 @@
 #include <xdc/runtime/Assert.h>
 #include <ti/sysbios/knl/Task.h>
 #include "uart.h"
-#include "../../third_party/FreeRTOS-Plus-CLI/FreeRTOS_CLI.h"
+#include "FreeRTOS_CLI.h"
 
 #if defined(CONFIG_USE_CLI)
 

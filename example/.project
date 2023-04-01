@@ -27,6 +27,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>README.md</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PARENT_LOC/README.md</locationURI>
+		</link>
+		<link>
 			<name>driver</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -47,9 +52,19 @@
 			<locationURI>PARENT-1-PROJECT_LOC/driver/f2833x/v142</locationURI>
 		</link>
 		<link>
+			<name>driver/fm25w256</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/driver/fram/fm25w256</locationURI>
+		</link>
+		<link>
 			<name>driver/ringbuf</name>
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/driver/utility/ringbuf</locationURI>
+		</link>
+		<link>
+			<name>driver/spi</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/driver/spi</locationURI>
 		</link>
 		<link>
 			<name>driver/uart</name>

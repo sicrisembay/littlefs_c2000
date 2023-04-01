@@ -11,7 +11,9 @@
 #include <ti/sysbios/knl/Clock.h>
 #include "DSP2833x_Device.h"
 #include "driver_def.h"
-#include "../driver/uart/uart.h"
+#include "uart/uart.h"
+#include "uart/cli.h"
+#include "spi/spi.h"
 
 
 extern unsigned int RamfuncsLoadStart;
@@ -38,6 +40,7 @@ Void taskFxn(UArg a0, UArg a1)
 
     UART_init();
     CLI_init();
+    SPI_init();
 
     System_printf("running taskFxn()\n");
 
