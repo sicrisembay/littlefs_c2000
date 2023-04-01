@@ -25,4 +25,41 @@
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>driver</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>littlefs</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>driver/f2833x</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/driver/f2833x/v142</locationURI>
+		</link>
+		<link>
+			<name>littlefs/lfs.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/littlefs/lfs.c</locationURI>
+		</link>
+		<link>
+			<name>littlefs/lfs.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/littlefs/lfs.h</locationURI>
+		</link>
+		<link>
+			<name>littlefs/lfs_util.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/littlefs/lfs_util.c</locationURI>
+		</link>
+		<link>
+			<name>littlefs/lfs_util.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/littlefs/lfs_util.h</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>
