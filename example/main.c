@@ -37,6 +37,7 @@ Void taskFxn(UArg a0, UArg a1)
     GpioDataRegs.GPBSET.bit.GPIO34 = 1; // LED off
 
     UART_init();
+    CLI_init();
 
     System_printf("running taskFxn()\n");
 

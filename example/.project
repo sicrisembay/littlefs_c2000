@@ -37,6 +37,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>third_party</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>driver/f2833x</name>
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/driver/f2833x/v142</locationURI>
@@ -70,6 +75,11 @@
 			<name>littlefs/lfs_util.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/littlefs/lfs_util.h</locationURI>
+		</link>
+		<link>
+			<name>third_party/FreeRTOS-Plus-CLI</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/third_party/FreeRTOS-Plus-CLI</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

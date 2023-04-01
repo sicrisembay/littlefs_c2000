@@ -28,4 +28,23 @@
 #define CONFIG_RX_QUEUE_BUFF_SZ_UARTC   128
 #endif
 
+#define CONFIG_USE_CLI                      1
+#define CONFIG_CLI_TASK_PRIORITY            1
+#define CONFIG_CLI_TASK_STACK               526
+#if CONFIG_USE_UART
+#define CONFIG_CLI_IO_UART                  1
+  #if CONFIG_ENABLE_UARTA
+    #define CONFIG_CLI_IO_UART_A            1
+  #endif
+  #if CONFIG_ENABLE_UARTB
+    #define CONFIG_CLI_IO_UART_B            1
+  #endif
+  #if CONFIG_ENABLE_UARTC
+    #define CONFIG_CLI_IO_UART_C            1
+  #endif
+#endif /* CONFIG_USE_UART */
+#define CONFIG_CLI_COMMAND_MAX_OUTPUT_SIZE  256
+#define CONFIG_CLI_COMMAND_MAX_INPUT_SIZE   256
+#define CONFIG_SYSBIOS_PRINTF_UART_A 1
+
 #endif /* DRIVER_DEF_H */
