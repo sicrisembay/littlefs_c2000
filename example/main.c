@@ -14,6 +14,7 @@
 #include "uart/uart.h"
 #include "uart/cli.h"
 #include "spi/spi.h"
+#include "fram/fm25w256/fm25w256.h"
 
 
 extern unsigned int RamfuncsLoadStart;
@@ -41,6 +42,7 @@ Void taskFxn(UArg a0, UArg a1)
     UART_init();
     CLI_init();
     SPI_init();
+    FM25W256_init();
 
     System_printf("running taskFxn()\n");
 

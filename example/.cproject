@@ -104,7 +104,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="driver/fm25w256|littlefs|driver/f2833x/DSP2833x_common/source|driver/f2833x/DSP2833x_common/lib|src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="littlefs|driver/f2833x/DSP2833x_common/source|driver/f2833x/DSP2833x_common/lib|src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

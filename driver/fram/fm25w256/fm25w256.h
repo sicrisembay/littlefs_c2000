@@ -1,3 +1,6 @@
+/*!
+ * \file fm25w256.h
+ */
 #ifndef FM25W256_H
 #define FM25W256_H
 
