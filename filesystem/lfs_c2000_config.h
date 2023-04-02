@@ -23,9 +23,20 @@
 #include <stdio.h>
 #endif
 
-typedef uint_least8_t uint8_t;
-typedef int_least8_t int8_t;
+#include "driver_def.h"
+#include <xdc/std.h>
+#include <xdc/runtime/System.h>
 
+
+#ifndef int8_t
+#define int8_t int_least8_t
+#endif
+
+#ifndef uint8_t
+#define uint8_t uint_least8_t
+#endif
+
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
 // Macros, may be replaced by system specific wrappers. Arguments to these
 // macros must not have side-effects as the macros can be removed for a smaller
@@ -35,7 +46,7 @@ typedef int_least8_t int8_t;
 #ifndef LFS_TRACE
 #ifdef LFS_YES_TRACE
 #define LFS_TRACE_(fmt, ...) \
-    printf("%s:%d:trace: " fmt "%s\n", __FILE__, __LINE__, __VA_ARGS__)
+    System_printf("  %s:%d:trace: " fmt "%s\r\n", __FILENAME__, __LINE__, __VA_ARGS__)
 #define LFS_TRACE(...) LFS_TRACE_(__VA_ARGS__, "")
 #else
 #define LFS_TRACE(...)
@@ -45,7 +56,7 @@ typedef int_least8_t int8_t;
 #ifndef LFS_DEBUG
 #ifndef LFS_NO_DEBUG
 #define LFS_DEBUG_(fmt, ...) \
-    printf("%s:%d:debug: " fmt "%s\n", __FILE__, __LINE__, __VA_ARGS__)
+    System_printf("  %s:%d:debug: " fmt "%s\r\n", __FILENAME__, __LINE__, __VA_ARGS__)
 #define LFS_DEBUG(...) LFS_DEBUG_(__VA_ARGS__, "")
 #else
 #define LFS_DEBUG(...)
@@ -55,7 +66,7 @@ typedef int_least8_t int8_t;
 #ifndef LFS_WARN
 #ifndef LFS_NO_WARN
 #define LFS_WARN_(fmt, ...) \
-    printf("%s:%d:warn: " fmt "%s\n", __FILE__, __LINE__, __VA_ARGS__)
+    System_printf("  %s:%d:warn: " fmt "%s\r\n", __FILENAME__, __LINE__, __VA_ARGS__)
 #define LFS_WARN(...) LFS_WARN_(__VA_ARGS__, "")
 #else
 #define LFS_WARN(...)
@@ -65,7 +76,7 @@ typedef int_least8_t int8_t;
 #ifndef LFS_ERROR
 #ifndef LFS_NO_ERROR
 #define LFS_ERROR_(fmt, ...) \
-    printf("%s:%d:error: " fmt "%s\n", __FILE__, __LINE__, __VA_ARGS__)
+    System_printf("  %s:%d:error: " fmt "%s\r\n", __FILENAME__, __LINE__, __VA_ARGS__)
 #define LFS_ERROR(...) LFS_ERROR_(__VA_ARGS__, "")
 #else
 #define LFS_ERROR(...)
@@ -215,5 +226,9 @@ static inline void lfs_free(void *p) {
     (void)p;
 #endif
 }
+
+
+int lfs_c2000_format();
+
 
 #endif /* LFS_UTIL_C2000_H */

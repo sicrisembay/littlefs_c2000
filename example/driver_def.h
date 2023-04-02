@@ -28,9 +28,12 @@
 #define CONFIG_RX_QUEUE_BUFF_SZ_UARTC       128
 #endif
 
+/*
+ * Command Line Console Configuration
+ */
 #define CONFIG_USE_CLI                      1
 #define CONFIG_CLI_TASK_PRIORITY            1
-#define CONFIG_CLI_TASK_STACK               526
+#define CONFIG_CLI_TASK_STACK               2048
 #if CONFIG_USE_UART
 #define CONFIG_CLI_IO_UART                  1
   #if CONFIG_ENABLE_UARTA
@@ -49,6 +52,9 @@
 #define CONFIG_SYSBIOS_PRINTF_UART_B        1
 #define CONFIG_SYSBIOS_PRINTF_UART_C        1
 
+/*
+ * SPI Configuration
+ */
 #define CONFIG_USE_SPI_DEVICE               1
 #define CONFIG_SPI_RUN_IN_RAM               1
 #define CONFIG_ENABLE_MCBSPA_SPI            0
@@ -71,6 +77,9 @@
   #endif /* CONFIG_ENABLE_MCBSPB_SPI */
 #endif /* CONFIG_ENABLE_CLI_SPI_COMMAND */
 
+/*
+ * FRAM (FM25W256) Configuration
+ */
 #define CONFIG_USE_SPI_FM25W256             1
 #define CONFIG_SPI_FM25W256_MCBSPA          0
 #define CONFIG_SPI_FM25W256_MCBSPB          1
@@ -80,5 +89,14 @@
 #define CONFIG_ENABLE_CLI_FM25W256_COMMAND  1
 #define CONFIG_ENABLE_CLI_FM25W256_CMD_WRITE 1
 #define CONFIG_ENABLE_CLI_FM25W256_CMD_READ 1
+
+/*
+ * LittleFS Configuration
+ */
+#define CONFIG_FRAM_LFS_READ_SZ             1
+#define CONFIG_FRAM_LFS_PROG_SZ             1
+#define CONFIG_FRAM_LFS_BLOCK_SZ            128
+#define CONFIG_ENABLE_CLI_LFS_COMMAND       1
+#define CONFIG_ENABLE_CLI_LFS_CMD_FORMAT    1
 
 #endif /* DRIVER_DEF_H */

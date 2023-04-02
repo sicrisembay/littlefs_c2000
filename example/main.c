@@ -15,6 +15,7 @@
 #include "uart/cli.h"
 #include "spi/spi.h"
 #include "fram/fm25w256/fm25w256.h"
+#include "cmd_lfs.h"
 
 
 extern unsigned int RamfuncsLoadStart;
@@ -43,6 +44,9 @@ Void taskFxn(UArg a0, UArg a1)
     CLI_init();
     SPI_init();
     FM25W256_init();
+#if CONFIG_ENABLE_CLI_LFS_COMMAND
+    CMD_LFS_init();
+#endif
 
     System_printf("running taskFxn()\n");
 

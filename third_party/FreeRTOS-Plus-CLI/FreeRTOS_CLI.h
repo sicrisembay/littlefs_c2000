@@ -34,7 +34,10 @@
 #include <xdc/std.h>
 typedef UInt16 UBaseType_t;
 typedef Int16 BaseType_t;
-typedef signed char int8_t;
+
+#ifndef int8_t
+#define int8_t int_least8_t
+#endif
 
 /* The prototype to which callback functions used to process command line
 commands must comply.  pcWriteBuffer is a buffer into which the output from

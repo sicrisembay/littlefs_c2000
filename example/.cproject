@@ -48,7 +48,8 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/driver/f2833x/DSP2833x_common/include}"/>
 									<listOptionValue builtIn="false" value="${PROJECT_LOC}/../driver"/>
 									<listOptionValue builtIn="false" value="${PROJECT_LOC}/../filesystem"/>
-									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/littlefs}"/>
+									<listOptionValue builtIn="false" value="${PROJECT_LOC}/../filesystem/command"/>
+									<listOptionValue builtIn="false" value="${PROJECT_LOC}/../filesystem/littlefs"/>
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/third_party/FreeRTOS-Plus-CLI}"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.C2000_20.2.compilerID.DEFINE.428721644" name="Pre-define NAME (--define, -D)" superClass="com.ti.ccstudio.buildDefinitions.C2000_20.2.compilerID.DEFINE" valueType="definedSymbols">
