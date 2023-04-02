@@ -1,4 +1,4 @@
-[submodule "littlefs"]
-	path = littlefs
+[submodule "filesystem/littlefs"]
+	path = filesystem/littlefs
 	url = https://github.com/sicrisembay/littlefs.git
 	branch = c2000_port

@@ -37,7 +37,7 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>littlefs</name>
+			<name>filesystem</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
@@ -72,29 +72,39 @@
 			<locationURI>PARENT-1-PROJECT_LOC/driver/uart</locationURI>
 		</link>
 		<link>
-			<name>littlefs/lfs.c</name>
+			<name>filesystem/lfs_c2000_config.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/littlefs/lfs.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/filesystem/lfs_c2000_config.h</locationURI>
 		</link>
 		<link>
-			<name>littlefs/lfs.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/littlefs/lfs.h</locationURI>
-		</link>
-		<link>
-			<name>littlefs/lfs_util.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/littlefs/lfs_util.c</locationURI>
-		</link>
-		<link>
-			<name>littlefs/lfs_util.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/littlefs/lfs_util.h</locationURI>
+			<name>filesystem/littlefs</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
 			<name>third_party/FreeRTOS-Plus-CLI</name>
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/third_party/FreeRTOS-Plus-CLI</locationURI>
+		</link>
+		<link>
+			<name>filesystem/littlefs/lfs.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/filesystem/littlefs/lfs.c</locationURI>
+		</link>
+		<link>
+			<name>filesystem/littlefs/lfs.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/filesystem/littlefs/lfs.h</locationURI>
+		</link>
+		<link>
+			<name>filesystem/littlefs/lfs_util.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/filesystem/littlefs/lfs_util.c</locationURI>
+		</link>
+		<link>
+			<name>filesystem/littlefs/lfs_util.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/filesystem/littlefs/lfs_util.h</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

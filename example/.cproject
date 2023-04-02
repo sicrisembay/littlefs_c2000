@@ -47,11 +47,13 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/driver/f2833x/DSP2833x_headers/include}"/>
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/driver/f2833x/DSP2833x_common/include}"/>
 									<listOptionValue builtIn="false" value="${PROJECT_LOC}/../driver"/>
+									<listOptionValue builtIn="false" value="${PROJECT_LOC}/../filesystem"/>
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/littlefs}"/>
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/third_party/FreeRTOS-Plus-CLI}"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.C2000_20.2.compilerID.DEFINE.428721644" name="Pre-define NAME (--define, -D)" superClass="com.ti.ccstudio.buildDefinitions.C2000_20.2.compilerID.DEFINE" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="${COM_TI_BIOS_SYMBOLS}"/>
+									<listOptionValue builtIn="false" value="LFS_CONFIG=lfs_c2000_config.h"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.C2000_20.2.compilerID.DEBUGGING_MODEL.1768938930" name="Debugging model" superClass="com.ti.ccstudio.buildDefinitions.C2000_20.2.compilerID.DEBUGGING_MODEL" value="com.ti.ccstudio.buildDefinitions.C2000_20.2.compilerID.DEBUGGING_MODEL.SYMDEBUG__DWARF" valueType="enumerated"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.C2000_20.2.compilerID.DIAG_WARNING.1142883634" name="Treat diagnostic &lt;id&gt; as warning (--diag_warning, -pdsw)" superClass="com.ti.ccstudio.buildDefinitions.C2000_20.2.compilerID.DIAG_WARNING" valueType="stringList">
@@ -104,7 +106,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="littlefs|driver/f2833x/DSP2833x_common/source|driver/f2833x/DSP2833x_common/lib|src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="driver/f2833x/DSP2833x_common/source|driver/f2833x/DSP2833x_common/lib|src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
