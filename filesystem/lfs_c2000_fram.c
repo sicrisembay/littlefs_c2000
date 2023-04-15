@@ -8,9 +8,12 @@
 #include "fram/fm25w256/fm25w256.h"
 #endif /* CONFIG_USE_SPI_FM25W256 */
 
-static struct lfs_config cfg;
+static struct lfs_config cfg = {0};
+static lfs_file_t file = {0};
 static lfs_t lfs;
 static int bInit = 0;
+static int bMount = 0;
+static int bFileIsOpen = 0;
 
 #if CONFIG_USE_SPI_FM25W256
 #pragma DATA_SECTION(fm25w256Buffer, "DMARAM")
@@ -25,19 +28,16 @@ static int fram_read(const struct lfs_config *c,
 {
     int ret = LFS_ERR_OK;
     uint32_t address = 0;
-    uint16_t i = 0;
 #if CONFIG_USE_SPI_FM25W256
     FM25W256_RET_T retFram = FM25W256_OK;
-    memset(fm25w256Buffer, 0xFF, sizeof(fm25w256Buffer));
+    memset(fm25w256Buffer, 0, sizeof(fm25w256Buffer));
     address = (block * c->block_size) + off;
     FM25W256_SET_ADRESS(fm25w256Buffer, address);
     retFram = FM25W256_read(fm25w256Buffer, size + FM25W256_OPCODE_SZ + FM25W256_ADDR_SZ);
     if(FM25W256_OK != retFram) {
         ret = LFS_ERR_IO;
     } else {
-        for(i = 0; i < size; i++) {
-            ((uint8_t *)buffer)[i] = FM25W256_BUFFER(fm25w256Buffer, i);
-        }
+        memcpy(buffer, &(FM25W256_BUFFER(fm25w256Buffer, 0)), size);
     }
 #endif /* CONFIG_USE_SPI_FM25W256 */
     return (ret);
@@ -52,14 +52,11 @@ static int fram_prog(const struct lfs_config *c,
 {
     int ret = LFS_ERR_OK;
     uint32_t address = 0;
-    uint16_t i = 0;
 #if CONFIG_USE_SPI_FM25W256
     FM25W256_RET_T retFram = FM25W256_OK;
     address = (block * c->block_size) + off;
     FM25W256_SET_ADRESS(fm25w256Buffer, address);
-    for(i = 0; i < size; i++) {
-        FM25W256_BUFFER(fm25w256Buffer, i) = ((uint8_t *)buffer)[i];
-    }
+    memcpy(&FM25W256_BUFFER(fm25w256Buffer, 0), buffer, size);
     retFram = FM25W256_write(fm25w256Buffer, size + FM25W256_OPCODE_SZ + FM25W256_ADDR_SZ);
     if(FM25W256_OK != retFram) {
         ret = LFS_ERR_IO;
@@ -73,14 +70,11 @@ static int fram_erase(const struct lfs_config *c, lfs_block_t block)
 {
     int ret = LFS_ERR_OK;
     uint32_t address = 0;
-    uint16_t i = 0;
 #if CONFIG_USE_SPI_FM25W256
     FM25W256_RET_T retFram = FM25W256_OK;
     address = block * c->block_size;
     FM25W256_SET_ADRESS(fm25w256Buffer, address);
-    for(i = 0; i < c->block_size; i++) {
-        FM25W256_BUFFER(fm25w256Buffer, i) = 0xFF;
-    }
+    memset(&FM25W256_BUFFER(fm25w256Buffer, 0), 0xFF, c->block_size);
     retFram = FM25W256_write(fm25w256Buffer, c->block_size + FM25W256_OPCODE_SZ + FM25W256_ADDR_SZ);
     if(FM25W256_OK != retFram) {
         ret = LFS_ERR_IO;
@@ -138,6 +132,154 @@ int lfs_c2000_format()
 }
 
 
+int lfs_c2000_mount()
+{
+    int ret = LFS_ERR_OK;
+
+    if(bInit == 0) {
+        lfs_c2000_init();
+    }
+
+    ret = lfs_mount(&lfs, &cfg);
+    if(ret == LFS_ERR_OK) {
+        bMount = 1;
+    }
+
+    return (ret);
+}
+
+
+int lfs_c2000_umount()
+{
+    int ret = LFS_ERR_OK;
+
+    if(bInit == 0) {
+        return -1;
+    }
+
+    if(bMount) {
+        ret = lfs_unmount(&lfs);
+        bMount = 0;
+    }
+
+    return (ret);
+}
+
+
+int lfs_c2000_ls(const char * path, char * outBuffer, size_t bufferLen)
+{
+    char * tempStr[24];
+    if((bMount == 0) || (path == NULL) || (outBuffer == NULL)) {
+        return -1;
+    }
+
+    lfs_dir_t dir;
+    struct lfs_info info;
+    int err = lfs_dir_open(&lfs, &dir, path);
+    if(err) {
+        return err;
+    }
+
+    while(1) {
+        int res = lfs_dir_read(&lfs, &dir, &info);
+        if (res < 0) {
+            return res;
+        }
+
+        if(res == 0) {
+            break;
+        }
+
+        switch (info.type) {
+            case LFS_TYPE_REG: {
+                outBuffer = strncat(outBuffer, "    ", bufferLen);
+                break;
+            }
+            case LFS_TYPE_DIR: {
+                outBuffer = strncat(outBuffer, "  d ", bufferLen);
+                break;
+            }
+            default: {
+                outBuffer = strncat(outBuffer, "  ? ", bufferLen);
+                break;
+            }
+        }
+
+        System_snprintf(tempStr, sizeof(tempStr), "%10ld ", info.size);
+        strncat(outBuffer, tempStr, bufferLen);
+        System_snprintf(tempStr, sizeof(tempStr), "%s\r\n", info.name);
+        strncat(outBuffer, tempStr, bufferLen);
+    }
+
+    strncat(outBuffer, "\r\n", bufferLen);
+    err = lfs_dir_close(&lfs,  &dir);
+    if(err) {
+        return err;
+    }
+    return 0;
+}
+
+
+int lfs_c2000_mkdir(const char * path)
+{
+    if((bMount == 0) || (path == NULL)) {
+        return -1;
+    }
+
+    return(lfs_mkdir(&lfs, path));
+}
+
+
+int lfs_c2000_fopen(const char * pathName)
+{
+    int ret = 0;
+    if((bMount == 0) || (pathName == NULL) || (bFileIsOpen != 0)) {
+        return -1;
+    }
+
+    ret = lfs_file_open(&lfs, &file, pathName, LFS_O_CREAT | LFS_O_RDWR);
+    if(ret == LFS_ERR_OK) {
+        bFileIsOpen = 1;
+    } else {
+        bFileIsOpen = 0;
+    }
+
+    return(ret);
+}
+
+
+int lfs_c2000_fwrite(const char * strData, size_t len)
+{
+    if((bMount == 0) || (strData == NULL) || (bFileIsOpen != 1)) {
+        return -1;
+    }
+    return(lfs_file_write(&lfs, &file, strData, len));
+}
+
+
+int lfs_c2000_fread(char * outBuffer, size_t bufLen)
+{
+    if((bMount == 0) || (outBuffer == NULL) || (bFileIsOpen != 1)) {
+        return -1;
+    }
+    return(lfs_file_read(&lfs, &file, outBuffer, bufLen));
+}
+
+
+int lfs_c2000_fclose()
+{
+    int ret = 0;
+    if((bMount == 0) || (bFileIsOpen != 1)) {
+        return -1;
+    }
+
+    ret = lfs_file_close(&lfs, &file);
+    memset(&file, 0, sizeof(file));
+    bFileIsOpen = 0;
+    return ret;
+}
+
+
 // Software CRC implementation with small lookup table
 uint32_t lfs_crc(uint32_t crc, const void *buffer, size_t size) {
     static const uint32_t rtable[16] = {
@@ -146,13 +288,11 @@ uint32_t lfs_crc(uint32_t crc, const void *buffer, size_t size) {
         0xedb88320, 0xf00f9344, 0xd6d6a3e8, 0xcb61b38c,
         0x9b64c2b0, 0x86d3d2d4, 0xa00ae278, 0xbdbdf21c,
     };
-
     const uint8_t *data = buffer;
 
     for (size_t i = 0; i < size; i++) {
         crc = (crc >> 4) ^ rtable[(crc ^ (data[i] >> 0)) & 0xf];
         crc = (crc >> 4) ^ rtable[(crc ^ (data[i] >> 4)) & 0xf];
     }
-
     return crc;
 }

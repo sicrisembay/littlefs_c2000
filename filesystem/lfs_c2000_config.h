@@ -27,6 +27,7 @@
 #include <xdc/std.h>
 #include <xdc/runtime/System.h>
 
+#define LFS_TI_C2000    (1)
 
 #ifndef int8_t
 #define int8_t int_least8_t
@@ -160,21 +161,7 @@ static inline int lfs_scmp(uint32_t a, uint32_t b) {
 
 // Convert between 32-bit little-endian and native order
 static inline uint32_t lfs_fromle32(uint32_t a) {
-#if (defined(  BYTE_ORDER  ) && defined(  ORDER_LITTLE_ENDIAN  ) &&   BYTE_ORDER   ==   ORDER_LITTLE_ENDIAN  ) || \
-    (defined(__BYTE_ORDER  ) && defined(__ORDER_LITTLE_ENDIAN  ) && __BYTE_ORDER   == __ORDER_LITTLE_ENDIAN  ) || \
-    (defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
     return a;
-#elif !defined(LFS_NO_INTRINSICS) && ( \
-    (defined(  BYTE_ORDER  ) && defined(  ORDER_BIG_ENDIAN  ) &&   BYTE_ORDER   ==   ORDER_BIG_ENDIAN  ) || \
-    (defined(__BYTE_ORDER  ) && defined(__ORDER_BIG_ENDIAN  ) && __BYTE_ORDER   == __ORDER_BIG_ENDIAN  ) || \
-    (defined(__BYTE_ORDER__) && defined(__ORDER_BIG_ENDIAN__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__))
-    return __builtin_bswap32(a);
-#else
-    return (((uint8_t*)&a)[0] <<  0) |
-           (((uint8_t*)&a)[1] <<  8) |
-           (((uint8_t*)&a)[2] << 16) |
-           (((uint8_t*)&a)[3] << 24);
-#endif
 }
 
 static inline uint32_t lfs_tole32(uint32_t a) {
@@ -183,21 +170,10 @@ static inline uint32_t lfs_tole32(uint32_t a) {
 
 // Convert between 32-bit big-endian and native order
 static inline uint32_t lfs_frombe32(uint32_t a) {
-#if !defined(LFS_NO_INTRINSICS) && ( \
-    (defined(  BYTE_ORDER  ) && defined(  ORDER_LITTLE_ENDIAN  ) &&   BYTE_ORDER   ==   ORDER_LITTLE_ENDIAN  ) || \
-    (defined(__BYTE_ORDER  ) && defined(__ORDER_LITTLE_ENDIAN  ) && __BYTE_ORDER   == __ORDER_LITTLE_ENDIAN  ) || \
-    (defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__))
-    return __builtin_bswap32(a);
-#elif (defined(  BYTE_ORDER  ) && defined(  ORDER_BIG_ENDIAN  ) &&   BYTE_ORDER   ==   ORDER_BIG_ENDIAN  ) || \
-    (defined(__BYTE_ORDER  ) && defined(__ORDER_BIG_ENDIAN  ) && __BYTE_ORDER   == __ORDER_BIG_ENDIAN  ) || \
-    (defined(__BYTE_ORDER__) && defined(__ORDER_BIG_ENDIAN__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
-    return a;
-#else
-    return (((uint8_t*)&a)[0] << 24) |
-           (((uint8_t*)&a)[1] << 16) |
-           (((uint8_t*)&a)[2] <<  8) |
-           (((uint8_t*)&a)[3] <<  0);
-#endif
+    return (((a << 24) & 0xFF000000U) |
+            ((a << 8)  & 0x00FF0000U) |
+            ((a >> 8)  & 0x0000FF00U) |
+            ((a >> 24) & 0x000000FFU));
 }
 
 static inline uint32_t lfs_tobe32(uint32_t a) {
@@ -227,8 +203,34 @@ static inline void lfs_free(void *p) {
 #endif
 }
 
+static inline uint32_t c2000_buffer_to_uint32(uint8_t * buffer)
+{
+    return ((uint32_t)(buffer[0] & 0x00FF) |
+            (((uint32_t)(buffer[1] & 0x0FF)) << 8) |
+            (((uint32_t)(buffer[2] & 0x0FF)) << 16) |
+            (((uint32_t)(buffer[3] & 0x0FF)) << 24)
+            );
+}
+
+
+static inline void c2000_uint32_to_buffer(uint32_t val, uint8_t * buffer)
+{
+    buffer[0] = (uint8_t)(val & 0x000000FF);
+    buffer[1] = (uint8_t)((val >> 8) & 0x000000FF);
+    buffer[2] = (uint8_t)((val >> 16) & 0x000000FF);
+    buffer[3] = (uint8_t)((val >> 24) & 0x000000FF);
+}
+
 
 int lfs_c2000_format();
+int lfs_c2000_mount();
+int lfs_c2000_umount();
+int lfs_c2000_mkdir(const char * path);
+int lfs_c2000_ls(const char * path, char * outBuffer, size_t bufferLen);
 
+int lfs_c2000_fopen(const char * pathName);
+int lfs_c2000_fwrite(const char * strData, size_t len);
+int lfs_c2000_fread(char * outBuffer, size_t bufLen);
+int lfs_c2000_fclose();
 
 #endif /* LFS_UTIL_C2000_H */
