@@ -55,4 +55,34 @@ For this test, LittleFS configuration for this specific external FRAM storage is
 In this example, SysBIOS version 6.83 is used.  Most of the test is done using a command line interface.  For this, a port of
 FreeRTOS-Plus-CLI to SysBIOS is used.
 
-TODO!
+
+Some very useful CLI commands are:
+
+
+| Command                  | Description                                                                                                                                    |
+|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| lfs_dump [block_id]      | This dumps the contents of a specified block.  This is very useful when debugging the FRAM contents.  Checkout the information in [SPEC.md](https://github.com/littlefs-project/littlefs/blob/master/SPEC.md). |
+| lfs_erase [block_id]     | This erases (simply set to 0xFF) a specified block.  -1 block_id erases the entire FRAM.                                                       |
+| lfs_format               | This formats the FRAM.                                                                                                                         |
+| lfs_mount                | This mounts the LittleFS filesystem.                                                                                                           |
+| lfs_umount               | This unmounts the LittleFS filesystem.                                                                                                         |
+| lfs_ls path              | This lists the contents of directory specified by <path>                                                                                       |
+| lfs_mkdir [fullPathName] | This creates a directory specified by <fullPathName>                                                                                           |
+| lfs_fopen [fullPathName] | This opens or creates a file specified by <fullPathName>.  Note: Default is LFS_O_CREAT \| LFS_O_RDWR                                          |
+| lfs_fwrite [asciiString] | This writes an ASCII string to an opened file using lfs_fopen.                                                                                 |
+| lfs_fread                | This reads the contents of an opened file and prints it in the console.                                                                        |
+| lfs_fclose               | This closes an opened file.                                                                                                                    |
+
+
+### Test01: Format
+First test is to format the FRAM using "lfs_format".  The superblock metadata pair (block0 and block1) is dump using lfs_dump.  Using the information from [SPEC.md](https://github.com/littlefs-project/littlefs/blob/master/SPEC.md), 
+the superblocks are then inspected.  The figure below shows that superblocks are OK.
+
+
+<img src="https://github.com/sicrisembay/littlefs_c2000/blob/main/doc/img/superblockAfterFormat.png">
+
+
+### TODO!!!
+
+
+
