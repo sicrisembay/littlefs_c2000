@@ -82,7 +82,24 @@ the superblocks are then inspected.  The figure below shows that superblocks are
 <img src="https://github.com/sicrisembay/littlefs_c2000/blob/main/doc/img/superblockAfterFormat.png">
 
 
-### TODO!!!
+### Test02: File Test
+First part of the test, it creates a file, "fileTest01.txt", in the root directory and writes the string "Hello World!" to the said file.  The file is closed and the filesystem unmounted.  
+Second part of the test, it opens the existing file, "fileTest01.txt", and reads the contents of the said file and prints the contents into the console.
 
+<img src="https://github.com/sicrisembay/littlefs_c2000/blob/main/doc/img/fileTest.png">
+
+
+### Test03: Directory Test
+In this test, three (3) directories ("color", "movie", "potato") are created in the root directory.  Under "color" directory, three files are created.  These files are "green.txt", "blue.txt", and "red.txt".
+
+
+<img src="https://github.com/sicrisembay/littlefs_c2000/blob/main/doc/img/directoryTest.png">
+
+
+## Test04: Nested Directory Test
+In this test, three (3) directories ("frozen", "spiderman", "transformers") are created in the "movie" directory.  A file, "robot.txt", is then created under "/movie/transformers" directory.
+
+
+<img src="https://github.com/sicrisembay/littlefs_c2000/blob/main/doc/img/nestedDirTest.png">
 
 
