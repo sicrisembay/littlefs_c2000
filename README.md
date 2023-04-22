@@ -66,13 +66,14 @@ Some very useful CLI commands are:
 | lfs_format               | This formats the FRAM.                                                                                                                         |
 | lfs_mount                | This mounts the LittleFS filesystem.                                                                                                           |
 | lfs_umount               | This unmounts the LittleFS filesystem.                                                                                                         |
-| lfs_ls path              | This lists the contents of directory specified by <path>                                                                                       |
-| lfs_mkdir [fullPathName] | This creates a directory specified by <fullPathName>                                                                                           |
-| lfs_fopen [fullPathName] | This opens or creates a file specified by <fullPathName>.  Note: Default is LFS_O_CREAT \| LFS_O_RDWR                                          |
+| lfs_ls path              | This lists the contents of directory specified by [path]                                                                                       |
+| lfs_mkdir [fullPathName] | This creates a directory specified by [fullPathName]                                                                                           |
+| lfs_fopen [fullPathName] | This opens or creates a file specified by [fullPathName].  Note: Default is LFS_O_CREAT \| LFS_O_RDWR                                          |
 | lfs_fwrite [asciiString] | This writes an ASCII string to an opened file using lfs_fopen.                                                                                 |
 | lfs_fread                | This reads the contents of an opened file and prints it in the console.                                                                        |
 | lfs_fclose               | This closes an opened file.                                                                                                                    |
-
+| lfs_mv [src] [dst]       | This moves/renames a file or directory from [src] to [dst]                                                                                     |
+| lfs_rm [src]             | This removes a file or an empty directory                                                                                                      |
 
 ### Test01: Format
 First test is to format the FRAM using "lfs_format".  The superblock metadata pair (block0 and block1) is dump using lfs_dump.  Using the information from [SPEC.md](https://github.com/littlefs-project/littlefs/blob/master/SPEC.md), 
@@ -101,5 +102,23 @@ In this test, three (3) directories ("frozen", "spiderman", "transformers") are 
 
 
 <img src="https://github.com/sicrisembay/littlefs_c2000/blob/main/doc/img/nestedDirTest.png">
+
+
+## Test05: Moving File and Directory Test
+First part of the test, it renames the existing file "testFile01.txt" to "bakedPotato.txt".
+Second part of the test, it moves the file "bakedPotato.txt" to "/potato/bakedPotato.txt".
+Third part of the test, it creates a directory "/potatoRecipe" and move it to "/potato/potatoRecipe"
+
+
+<img src="https://github.com/sicrisembay/littlefs_c2000/blob/main/doc/img/moveTest.png">
+
+
+## Test06: Removing file and empty directory
+First part of the test, it removes an empty directory "/potato/potatoRecipe"
+Second part of the test, it removes the file "/potato/bakedPotato.txt"
+Third part of the test, it removes the empty directory "/potato"
+
+
+<img src="https://github.com/sicrisembay/littlefs_c2000/blob/main/doc/img/removeTest.png">
 
 
