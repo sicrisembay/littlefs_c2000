@@ -473,6 +473,88 @@ static const CLI_Command_Definition_t lfs_cmd_fread = {
 };
 
 
+static Int16 FuncLfsMv(char * write_buffer, size_t bufferLen, const char *commandStr)
+{
+    char * ptrStrParamSrc;
+    Int16 strParamSrcLen;
+    char src[128];
+    char * ptrStrParamTarget;
+    Int16 strParamTargetLen;
+    char target[128];
+
+    memset(write_buffer, 0, bufferLen);
+
+    /* Get source name */
+    ptrStrParamSrc = (char *) CLIGetParameter(commandStr, 1, &strParamSrcLen);
+    if((ptrStrParamSrc == NULL) || (strParamSrcLen > (sizeof(src) - 1))){
+        System_snprintf(write_buffer, bufferLen, "    Error: Parameter1 not found!\r\n\r\n");
+        return 0;
+    }
+    strncpy(src, ptrStrParamSrc, strParamSrcLen);
+    src[strParamSrcLen] = 0;
+
+    /* Get target name */
+    ptrStrParamTarget = (char *) CLIGetParameter(commandStr, 2, &strParamTargetLen);
+    if(ptrStrParamTarget == NULL) {
+        System_snprintf(write_buffer, bufferLen, "    Error: Parameter1 not found!\r\n\r\n");
+        return 0;
+    }
+    strncpy(target, ptrStrParamTarget, strParamTargetLen);
+    target[strParamTargetLen] = 0;
+
+    if(lfs_c2000_mv(src, target) == LFS_ERR_OK) {
+        System_snprintf(write_buffer, bufferLen, "    OK.\r\n\r\n");
+    } else {
+        System_snprintf(write_buffer, bufferLen, "    Failed!\r\n\r\n");
+    }
+    return 0;
+}
+
+
+static const CLI_Command_Definition_t lfs_cmd_mv = {
+    "lfs_mv",
+    "lfs_mv <src> <taget>:\r\n"
+    "    Moves/renames <src> to <target>\r\n\r\n",
+    FuncLfsMv,
+    2
+};
+
+
+static Int16 FuncLfsRm(char * write_buffer, size_t bufferLen, const char *commandStr)
+{
+    char * ptrStrParamSrc;
+    Int16 strParamSrcLen;
+    char path[128];
+
+    memset(write_buffer, 0, bufferLen);
+
+    /* Get Full path name */
+    ptrStrParamSrc = (char *) CLIGetParameter(commandStr, 1, &strParamSrcLen);
+    if((ptrStrParamSrc == NULL) || (strParamSrcLen > (sizeof(path) - 1))){
+        System_snprintf(write_buffer, bufferLen, "    Error: Parameter1 not found!\r\n\r\n");
+        return 0;
+    }
+    strncpy(path, ptrStrParamSrc, strParamSrcLen);
+    path[strParamSrcLen] = 0;
+
+    if(lfs_c2000_rm(path) == LFS_ERR_OK) {
+        System_snprintf(write_buffer, bufferLen, "    OK.\r\n\r\n");
+    } else {
+        System_snprintf(write_buffer, bufferLen, "    Failed!\r\n\r\n");
+    }
+    return 0;
+}
+
+
+static const CLI_Command_Definition_t lfs_cmd_rm = {
+    "lfs_rm",
+    "lfs_rm <path>:\r\n"
+    "    Removes file or directory specified by <path>\r\n\r\n",
+    FuncLfsRm,
+    1
+};
+
+
 #endif /* CONFIG_ENABLE_CLI_LFS_CMD_FOPEN */
 
 
@@ -503,6 +585,8 @@ void CMD_LFS_init(void)
     CLIRegisterCommand(&lfs_cmd_fclose);
     CLIRegisterCommand(&lfs_cmd_fwrite);
     CLIRegisterCommand(&lfs_cmd_fread);
+    CLIRegisterCommand(&lfs_cmd_mv);
+    CLIRegisterCommand(&lfs_cmd_rm);
 #endif /* CONFIG_ENABLE_CLI_LFS_CMD_FOPEN */
 }
 

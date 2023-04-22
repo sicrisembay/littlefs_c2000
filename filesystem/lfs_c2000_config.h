@@ -231,6 +231,8 @@ int lfs_c2000_ls(const char * path, char * outBuffer, size_t bufferLen);
 int lfs_c2000_fopen(const char * pathName);
 int lfs_c2000_fwrite(const char * strData, size_t len);
 int lfs_c2000_fread(char * outBuffer, size_t bufLen);
+int lfs_c2000_mv(const char * source, const char * target);
+int lfs_c2000_rm(const char * path);
 int lfs_c2000_fclose();
 
 #endif /* LFS_UTIL_C2000_H */

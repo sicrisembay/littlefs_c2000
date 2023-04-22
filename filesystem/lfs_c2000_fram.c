@@ -266,6 +266,26 @@ int lfs_c2000_fread(char * outBuffer, size_t bufLen)
 }
 
 
+int lfs_c2000_mv(const char * source, const char * target)
+{
+    if((bMount == 0) || (source == NULL) || (target == NULL)) {
+        return -1;
+    }
+
+    return(lfs_rename(&lfs, source, target));
+}
+
+
+int lfs_c2000_rm(const char * path)
+{
+    if((bMount == 0) || (path == NULL)) {
+        return -1;
+    }
+
+    return(lfs_remove(&lfs, path));
+}
+
+
 int lfs_c2000_fclose()
 {
     int ret = 0;
