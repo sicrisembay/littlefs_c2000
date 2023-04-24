@@ -1,7 +1,7 @@
 #ifndef DRIVER_SPI_H
 #define DRIVER_SPI_H
 
-#include "driver_def.h"
+#include "autoconf.h"
 #include "stdbool.h"
 #include <ti/sysbios/knl/Semaphore.h>
 

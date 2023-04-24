@@ -1,7 +1,7 @@
 #ifndef DRIVER_UART_H
 #define DRIVER_UART_H
 
-#include "driver_def.h"
+#include "autoconf.h"
 #include <xdc/std.h>
 
 #if CONFIG_USE_UART || __DOXYGEN__

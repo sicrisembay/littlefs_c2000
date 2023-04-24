@@ -4,7 +4,7 @@
 #ifndef COMM_CLI_H
 #define COMM_CLI_H
 
-#include "driver_def.h"
+#include "autoconf.h"
 
 #if defined(CONFIG_USE_CLI)
 

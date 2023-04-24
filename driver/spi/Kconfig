@@ -1,0 +1,203 @@
+menuconfig USE_SPI_DEVICE
+    bool "SPI"
+    default y
+
+    if USE_SPI_DEVICE
+        menuconfig ENABLE_MCBSPA_SPI
+            bool "McBSP-A"
+            default y
+
+            if ENABLE_MCBSPA_SPI
+                menu "IO Configuration"
+                    config MCBSPA_SPI_MDX_PULLUP_ENABLE
+                        bool "Enable MOSI pull-up"
+                        default n
+                    config MCBSPA_SPI_MDR_PULLUP_ENABLE
+                        bool "Enable MISO pull-up"
+                        default n
+                    config MCBSPA_SPI_MCLX_PULLUP_ENABLE
+                        bool "Enable CLK pull-up"
+                        default n
+                endmenu #"IO Configuration"
+                config TASK_PRIO_MCBSPA_SPI
+                    int "Task Priority"
+                    default 1
+                config TASK_STACK_MCBSPA_SPI
+                    int "Task Stack"
+                    default 512
+                config MCBSPA_SPI_MAX_REQUEST_COUNT
+                    int "Max number of SPI transaction Request"
+                    default 10
+                config MCBSPA_SPI_DEFAULT_TIMEOUT
+                    int "Default pending timeout"
+                    default 100
+            endif
+
+        menuconfig ENABLE_MCBSPB_SPI
+            bool "McBSP-B"
+            default y
+
+            if ENABLE_MCBSPB_SPI
+                menu "IO Configuration"
+                    choice
+                        prompt "MOSI GPIO"
+                        default MCBSPB_SPI_MDX_GPIO12
+                        config MCBSPB_SPI_MDX_GPIO12
+                                bool "GPIO12"
+                        config MCBSPB_SPI_MDX_GPIO24
+                            bool "GPIO24"
+                    endchoice
+                    config MCBSPB_SPI_MDX_GPIO
+                        int
+                        default 12 if MCBSPB_SPI_MDX_GPIO12
+                        default 24 if MCBSPB_SPI_MDX_GPIO24
+                    config MCBSPB_SPI_MDX_PULLUP_ENABLE
+                        bool "Enable MOSI pull-up"
+                        default n
+                    choice
+                        prompt "MISO GPIO"
+                        default MCBSPB_SPI_MDR_GPIO13
+                        config MCBSPB_SPI_MDR_GPIO13
+                            bool "GPIO13"
+                        config MCBSPB_SPI_MDR_GPIO25
+                            bool "GPIO25"
+                    endchoice
+                    config MCBSPB_SPI_MDR_GPIO
+                        int
+                        default 13 if MCBSPB_SPI_MDR_GPIO13
+                        default 25 if MCBSPB_SPI_MDR_GPIO25
+                    config MCBSPB_SPI_MDR_PULLUP_ENABLE
+                        bool "Enable MISO pull-up"
+                        default n
+
+                    choice
+                        prompt "CLK GPIO"
+                        default MCBSPB_SPI_CLK_GPIO14
+                        config MCBSPB_SPI_CLK_GPIO14
+                            bool "GPIO14"
+                        config MCBSPB_SPI_CLK_GPIO26
+                            bool "GPIO26"
+                    endchoice
+                    config MCBSPB_SPI_MCLKX_GPIO
+                        int
+                        default 14 if MCBSPB_SPI_CLK_GPIO14
+                        default 26 if MCBSPB_SPI_CLK_GPIO26
+                    config MCBSPB_SPI_MCLX_PULLUP_ENABLE
+                        bool "Enable CLK pull-up"
+                        default n
+                endmenu #"IO configuration"
+
+                config TASK_PRIO_MCBSPB_SPI
+                    int "Task Priority"
+                    default 1
+                config TASK_STACK_MCBSPB_SPI
+                    int "Task Stack"
+                    default 512
+
+                config MCBSPB_SPI_MAX_REQUEST_COUNT
+                    int "Max number of SPI transaction Request"
+                    default 10
+                config MCBSPB_SPI_DEFAULT_TIMEOUT
+                    int "Default pending timeout"
+                    default 100
+            endif
+
+        menuconfig ENABLE_FIFO_SPI
+            bool "SPI-FIFO"
+            default n
+
+            if ENABLE_FIFO_SPI
+                menu "IO Configuration"
+                    choice
+                        prompt "MOSI GPIO"
+                        default FIFO_SPI_MOSI_GPIO54
+                        config FIFO_SPI_MOSI_GPIO16
+                            bool "GPIO16"
+                        config FIFO_SPI_MOSI_GPIO54
+                            bool "GPIO54"
+                    endchoice
+
+                    config FIFO_SPI_MOSI_PULLUP_ENABLE
+                        bool "Enable MOSI internal pull-up"
+                        default y
+
+                    choice
+                        prompt "MISO GPIO"
+                        default FIFO_SPI_MISO_GPIO55
+                        config FIFO_SPI_MISO_GPIO17
+                            bool "GPIO17"
+                        config FIFO_SPI_MISO_GPIO55
+                            bool "GPIO55"
+                    endchoice
+
+                    config FIFO_SPI_MISO_PULLUP_ENABLE
+                        bool "Enable MISO internal pull-up"
+                        default y
+
+                    choice
+                        prompt "CLOCK GPIO"
+                        default FIFO_SPI_CLK_GPIO56
+                        config FIFO_SPI_CLK_GPIO18
+                            bool "GPIO18"
+                        config FIFO_SPI_CLK_GPIO56
+                            bool "GPIO56"
+                    endchoice
+
+                    config FIFO_SPI_CLOCK_PULLUP_ENABLE
+                        bool "Enable Clock internal pull-up"
+                        default y
+
+                endmenu # "IO Configuration"
+
+                config FIFO_SPI_BAUDRATE_KHZ
+                    int "Baud Rate (Unit: kHz)"
+                    default 500
+                config TASK_PRIO_FIFO_SPI
+                    int "Task Priority"
+                    default 1
+                config TASK_STACK_FIFO_SPI
+                    int "Task Stack"
+                    default 512
+                config FIFO_SPI_MAX_REQUEST_COUNT
+                    int "Max number of SPI transaction Request"
+                    default 10
+                config FIFO_SPI_DEFAULT_TIMEOUT
+                    int "Default pending timeout"
+                    default 100
+            endif # ENABLE_FIFO_SPI
+
+        config SPI_RUN_IN_RAM
+            bool "Run SPI functions in RAM"
+            default n
+
+        menu "SPI Commands (test)"
+            depends on USE_CLI
+
+            config ENABLE_CLI_SPI_COMMAND
+                bool "Enable Test Command"
+                default n
+            config ENABLE_CLI_SPI_CMD_LIST
+                depends on ENABLE_CLI_SPI_COMMAND
+                bool "spi_list"
+                default n
+            config ENABLE_CLI_SPI_CMD_TRANSACT
+                depends on ENABLE_CLI_SPI_COMMAND
+                bool "spi_transact"
+                default n
+            config CLI_SPI_MCBSPA_CS_GPIO
+                depends on ENABLE_CLI_SPI_COMMAND && ENABLE_CLI_SPI_CMD_TRANSACT && ENABLE_MCBSPA_SPI
+                int "SPI McBSP-A Test CS GPIO"
+                default 23
+            config CLI_SPI_MCBSPB_CS_GPIO
+                depends on ENABLE_CLI_SPI_COMMAND && ENABLE_CLI_SPI_CMD_TRANSACT && ENABLE_MCBSPB_SPI
+                int "SPI McBSP-B Test CS GPIO"
+                default 23
+            config CLI_SPI_FIFO_CS_GPIO
+                depends on ENABLE_CLI_SPI_COMMAND && ENABLE_CLI_SPI_CMD_TRANSACT && ENABLE_FIFO_SPI
+                int "SPI FIFO Test CS GPIO"
+                default 19
+        endmenu
+
+    rsource "../fram/fm25w256/Kconfig"
+
+    endif

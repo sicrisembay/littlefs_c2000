@@ -1,0 +1,8 @@
+
+.PHONY := loadconfig
+
+all: loadconfig
+
+loadconfig:
+	@echo Autogenerating files
+	make loadconfig

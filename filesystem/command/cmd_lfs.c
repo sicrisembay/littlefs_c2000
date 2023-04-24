@@ -2,7 +2,7 @@
  * \file cmd_lfs.c
  */
 
-#include "driver_def.h"
+#include "autoconf.h"
 #include <limits.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -17,7 +17,7 @@
 #if CONFIG_ENABLE_CLI_LFS_COMMAND
 
 #pragma DATA_SECTION(lfsCmdBuffer, "DMARAM")
-FM25W256_DECLARE_BUFFER(lfsCmdBuffer, CONFIG_FRAM_LFS_BLOCK_SZ);
+FM25W256_DECLARE_BUFFER(lfsCmdBuffer, CONFIG_LFS_BLOCK_SZ);
 
 
 static Int16 FuncLfsDump(char * write_buffer, size_t bufferLen, const char *commandStr)
@@ -49,16 +49,16 @@ static Int16 FuncLfsDump(char * write_buffer, size_t bufferLen, const char *comm
         i32Temp = strtol(tmpStr, &ptrEnd, 0);
         if((ptrEnd == tmpStr) || (*ptrEnd != '\0') || (i32Temp < 0) ||
            (((i32Temp == LONG_MIN) || (i32Temp == LONG_MAX)) && (errno == ERANGE)) ||
-           ((i32Temp * CONFIG_FRAM_LFS_BLOCK_SZ) >= CONFIG_SPI_FM25W256_SIZE)) {
+           ((i32Temp * CONFIG_LFS_BLOCK_SZ) >= CONFIG_SPI_FM25W256_SIZE)) {
             /* parameter is not a number */
             System_snprintf(write_buffer, bufferLen,
                     "    Error: Parameter 1 value is invalid.\r\n\r\n");
             return 0;
         }
-        address = (UInt16)(i32Temp & 0xFFFF) * CONFIG_FRAM_LFS_BLOCK_SZ;
+        address = (UInt16)(i32Temp & 0xFFFF) * CONFIG_LFS_BLOCK_SZ;
         memset(lfsCmdBuffer, 0xFF, sizeof(lfsCmdBuffer));
         FM25W256_SET_ADRESS(lfsCmdBuffer, address);
-        ret = FM25W256_read(lfsCmdBuffer, CONFIG_FRAM_LFS_BLOCK_SZ + FM25W256_OPCODE_SZ + FM25W256_ADDR_SZ);
+        ret = FM25W256_read(lfsCmdBuffer, CONFIG_LFS_BLOCK_SZ + FM25W256_OPCODE_SZ + FM25W256_ADDR_SZ);
 
         if(FM25W256_OK != ret) {
             System_snprintf(write_buffer, bufferLen,
@@ -68,7 +68,7 @@ static Int16 FuncLfsDump(char * write_buffer, size_t bufferLen, const char *comm
 
         internalState++;
         printIdx = 0;
-        nBytes = CONFIG_FRAM_LFS_BLOCK_SZ;
+        nBytes = CONFIG_LFS_BLOCK_SZ;
         return 1;
     } else if (internalState == 1) {
         /* Display Values */
@@ -138,13 +138,13 @@ static Int16 FuncLfsErase(char * write_buffer, size_t bufferLen, const char *com
         }
 
         if((i32Temp < -1) ||
-           (i32Temp >= (CONFIG_SPI_FM25W256_SIZE / CONFIG_FRAM_LFS_BLOCK_SZ))){
+           (i32Temp >= (CONFIG_SPI_FM25W256_SIZE / CONFIG_LFS_BLOCK_SZ))){
             System_snprintf(write_buffer, bufferLen,
                     "    Invalid block id\r\n\r\n");
             return 0;
         } else if(i32Temp == -1) {
             /* Delete all */
-            remaining = CONFIG_SPI_FM25W256_SIZE / CONFIG_FRAM_LFS_BLOCK_SZ;
+            remaining = CONFIG_SPI_FM25W256_SIZE / CONFIG_LFS_BLOCK_SZ;
             blockToDelete = 0;
             internalState++;
         } else {
@@ -155,10 +155,10 @@ static Int16 FuncLfsErase(char * write_buffer, size_t bufferLen, const char *com
         }
         return 1;
     } else if(internalState == 1) {
-        address = (UInt16)(blockToDelete & 0xFFFF) * CONFIG_FRAM_LFS_BLOCK_SZ;
+        address = (UInt16)(blockToDelete & 0xFFFF) * CONFIG_LFS_BLOCK_SZ;
         FM25W256_SET_ADRESS(lfsCmdBuffer, address);
-        memset(&(FM25W256_BUFFER(lfsCmdBuffer, 0)), 0xFF, CONFIG_FRAM_LFS_BLOCK_SZ);
-        ret = FM25W256_write(lfsCmdBuffer, CONFIG_FRAM_LFS_BLOCK_SZ + FM25W256_OPCODE_SZ + FM25W256_ADDR_SZ);
+        memset(&(FM25W256_BUFFER(lfsCmdBuffer, 0)), 0xFF, CONFIG_LFS_BLOCK_SZ);
+        ret = FM25W256_write(lfsCmdBuffer, CONFIG_LFS_BLOCK_SZ + FM25W256_OPCODE_SZ + FM25W256_ADDR_SZ);
         if(FM25W256_OK == ret) {
             System_snprintf(write_buffer, bufferLen,
                     "    Deleted block %d\r\n", blockToDelete);

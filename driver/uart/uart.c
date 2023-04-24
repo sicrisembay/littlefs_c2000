@@ -1,4 +1,4 @@
-#include "driver_def.h"
+#include "autoconf.h"
 #if CONFIG_USE_UART || __DOXYGEN__
 
 #include "string.h"  /* for memset */

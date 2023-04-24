@@ -1,0 +1,43 @@
+menuconfig USE_SPI_FM25W256
+    bool "FRAM FM25W256"
+    default y
+
+    if USE_SPI_FM25W256
+        choice
+            prompt "SPI BUS"
+            config SPI_FM25W256_MCBSPA
+                depends on ENABLE_MCBSPA_SPI
+                bool "McBSP-A"
+            config SPI_FM25W256_MCBSPB
+                depends on ENABLE_MCBSPB_SPI
+                bool "McBSP-B"
+        endchoice
+
+        config SPI_FM25W256_CS
+            int "Chip Select GPIO"
+            default 15
+
+        config SPI_FM25W256_SIZE
+            int
+            default 32768
+
+        config SPI_FM25W256_DEFAULT_TIMEOUT
+            int "Default Pending Timeout"
+            default 100
+
+    menu "FM25W256 Commands (test)"
+        depends on USE_CLI
+        config ENABLE_CLI_FM25W256_COMMAND
+            bool "Enable Test Command"
+            default n
+        config ENABLE_CLI_FM25W256_CMD_WRITE
+            depends on ENABLE_CLI_FM25W256_COMMAND
+            bool "FM25W256_write"
+            default y
+        config ENABLE_CLI_FM25W256_CMD_READ
+            depends on ENABLE_CLI_FM25W256_COMMAND
+            bool "FM25W256_read"
+            default y
+    endmenu
+
+    endif

@@ -1,7 +1,7 @@
 /*!
  * \file cli.c
  */
-#include "driver_def.h"
+#include "autoconf.h"
 #include "string.h"
 #include <stdbool.h>
 #include <xdc/std.h>

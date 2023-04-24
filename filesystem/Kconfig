@@ -1,0 +1,40 @@
+menuconfig USE_FILESYSTEM
+    bool "Filesystem"
+    default y
+
+    if USE_FILESYSTEM
+        menu "LittleFS"
+            config LFS_READ_SZ
+                int "Minimum Block Read Size"
+                default 1
+            config LFS_PROG_SZ
+                int "Minimum Block Program Size"
+                default 1
+            config LFS_BLOCK_SZ
+                int "Eraseable Block Size"
+                default 128
+
+            menuconfig ENABLE_CLI_LFS_COMMAND
+                depends on USE_CLI
+                bool "Test Command"
+                default y
+
+                if ENABLE_CLI_LFS_COMMAND
+                    config ENABLE_CLI_LFS_CMD_FORMAT
+                        bool "lfs_format"
+                        default y
+                    config ENABLE_CLI_LFS_CMD_MOUNT
+                        bool "lfs_mount"
+                        default y
+                    config ENABLE_CLI_LFS_CMD_LS
+                        bool "lfs_ls"
+                        default y
+                    config ENABLE_CLI_LFS_CMD_MKDIR
+                        bool "lfs_mkdir"
+                        default y
+                    config ENABLE_CLI_LFS_CMD_FOPEN
+                        bool "lfs_fopen"
+                        default y
+                endif
+        endmenu # LittleFS
+    endif

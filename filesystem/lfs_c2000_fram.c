@@ -2,7 +2,7 @@
  * \file lfs_c2000_fram.c
  */
 
-#include "driver_def.h"
+#include "autoconf.h"
 #include "lfs.h"
 #if CONFIG_USE_SPI_FM25W256
 #include "fram/fm25w256/fm25w256.h"
@@ -17,7 +17,7 @@ static int bFileIsOpen = 0;
 
 #if CONFIG_USE_SPI_FM25W256
 #pragma DATA_SECTION(fm25w256Buffer, "DMARAM")
-FM25W256_DECLARE_BUFFER(fm25w256Buffer, CONFIG_FRAM_LFS_BLOCK_SZ);
+FM25W256_DECLARE_BUFFER(fm25w256Buffer, CONFIG_LFS_BLOCK_SZ);
 #endif /* CONFIG_USE_SPI_FM25W256 */
 
 static int fram_read(const struct lfs_config *c,
@@ -91,7 +91,7 @@ static int fram_sync(const struct lfs_config *c)
 
 
 #define CONFIG_FRAM_LFS_CACHE_SIZE      (64)
-#define CONFIG_FRAM_LFS_BLOCK_COUNT     (CONFIG_SPI_FM25W256_SIZE / CONFIG_FRAM_LFS_BLOCK_SZ)
+#define CONFIG_FRAM_LFS_BLOCK_COUNT     (CONFIG_SPI_FM25W256_SIZE / CONFIG_LFS_BLOCK_SZ)
 #define CONFIG_FRAM_LFS_LOOKAHEAD_SIZE  (CONFIG_FRAM_LFS_BLOCK_COUNT / 8)
 
 static uint8_t lfs_readBuffer[CONFIG_FRAM_LFS_CACHE_SIZE];
@@ -107,9 +107,9 @@ static void lfs_c2000_init()
         cfg.prog = fram_prog;
         cfg.erase = fram_erase;
         cfg.sync = fram_sync;
-        cfg.read_size = CONFIG_FRAM_LFS_READ_SZ;
-        cfg.prog_size = CONFIG_FRAM_LFS_PROG_SZ;
-        cfg.block_size = CONFIG_FRAM_LFS_BLOCK_SZ;
+        cfg.read_size = CONFIG_LFS_READ_SZ;
+        cfg.prog_size = CONFIG_LFS_PROG_SZ;
+        cfg.block_size = CONFIG_LFS_BLOCK_SZ;
         cfg.block_count = CONFIG_FRAM_LFS_BLOCK_COUNT;
         cfg.block_cycles = 500;
         cfg.cache_size = CONFIG_FRAM_LFS_CACHE_SIZE;

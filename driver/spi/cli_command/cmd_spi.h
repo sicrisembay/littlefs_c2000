@@ -1,7 +1,7 @@
 #ifndef CMD_CLI_SPI_H
 #define CMD_CLI_SPI_H
 
-#include "driver_def.h"
+#include "autoconf.h"
 
 #if CONFIG_ENABLE_CLI_SPI_COMMAND
 
