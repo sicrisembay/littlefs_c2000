@@ -10,7 +10,7 @@
 #include <ti/sysbios/knl/Task.h>
 #include <ti/sysbios/knl/Clock.h>
 #include "DSP2833x_Device.h"
-#include "driver_def.h"
+#include "autoconf.h"
 #include "uart/uart.h"
 #include "uart/cli.h"
 #include "spi/spi.h"

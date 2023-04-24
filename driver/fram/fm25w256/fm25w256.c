@@ -1,7 +1,7 @@
 /*!
  * \file fm25w256.c
  */
-#include "driver_def.h"
+#include "autoconf.h"
 #include "command/cmd_fm25w256.h"
 #include <stdbool.h>
 #include <xdc/std.h>

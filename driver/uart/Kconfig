@@ -1,0 +1,170 @@
+menuconfig USE_UART
+    bool "UART"
+    default y
+
+    if USE_UART
+        menuconfig ENABLE_UARTA
+            bool "Enable UARTA"
+            default y
+
+            if ENABLE_UARTA
+                choice
+                    prompt "TX GPIO"
+                    default UARTA_TX_GPIO29
+                    config UARTA_TX_GPIO29
+                        bool "GPIO29"
+                    config UARTA_TX_GPIO35
+                        bool "GPIO35"
+                endchoice
+                config UARTA_TX_GPIO
+                    int
+                    default 29 if UARTA_TX_GPIO29
+                    default 35 if UARTA_TX_GPIO35
+
+                choice
+                    prompt "RX GPIO"
+                    default UARTA_RX_GPIO28
+                    config UARTA_RX_GPIO28
+                        bool "GPIO28"
+                    config UARTA_RX_GPIO36
+                        bool "GPIO36"
+                endchoice
+                config UARTA_RX_GPIO
+                    int
+                    default 28 if UARTA_RX_GPIO28
+                    default 36 if UARTA_RX_GPIO36
+
+                config BAUDRATE_UARTA
+                    int "Baud Rate"
+                    default 115200
+                config TX_QUEUE_BUFF_SZ_UARTA
+                    int "Transmit Queue Buffer Size"
+                    default 256
+                config RX_QUEUE_BUFF_SZ_UARTA
+                    int "Receive Queue Buffer Size"
+                    default 128
+            endif
+
+        menuconfig ENABLE_UARTB
+            bool "Enable UARTB"
+            default n
+
+            if ENABLE_UARTB
+                choice
+                    prompt "TX GPIO"
+                    default UARTB_TX_GPIO18
+                    config UARTB_TX_GPIO9
+                        bool "GPIO9"
+                    config UARTB_TX_GPIO14
+                        bool "GPIO14"
+                    config UARTB_TX_GPIO18
+                        bool "GPIO18"
+                    config UARTB_TX_GPIO22
+                        bool "GPIO22"
+                endchoice
+                config UARTB_TX_GPIO
+                    int
+                    default 9 if UARTB_TX_GPIO9
+                    default 14 if UARTB_TX_GPIO14
+                    default 18 if UARTB_TX_GPIO18
+                    default 22 if UARTB_TX_GPIO22
+
+                choice
+                    prompt "RX GPIO"
+                    default UARTB_RX_GPIO19
+                    config UARTB_RX_GPIO11
+                        bool "GPIO11"
+                    config UARTB_RX_GPIO15
+                        bool "GPIO15"
+                    config UARTB_RX_GPIO19
+                        bool "GPIO19"
+                    config UARTB_RX_GPIO23
+                        bool "GPIO23"
+                endchoice
+                config UARTB_RX_GPIO
+                    int
+                    default 11 if UARTB_RX_GPIO11
+                    default 15 if UARTB_RX_GPIO15
+                    default 19 if UARTB_RX_GPIO19
+                    default 23 if UARTB_RX_GPIO23
+
+                config BAUDRATE_UARTB
+                    int "Baud Rate"
+                    default 115200
+                config TX_QUEUE_BUFF_SZ_UARTB
+                    int "Transmit Queue Buffer Size"
+                    default 256
+                config RX_QUEUE_BUFF_SZ_UARTB
+                    int "Receive Queue Buffer Size"
+                    default 128
+            endif
+
+        menuconfig ENABLE_UARTC
+            bool "Enable UARTC"
+            default n
+
+            if ENABLE_UARTC
+                config UARTC_TX_GPIO
+                    int
+                    default 63
+                config UARTC_RX_GPIO
+                    int
+                    default 62
+                config BAUDRATE_UARTC
+                    int "Baud Rate"
+                    default 115200
+                config TX_QUEUE_BUFF_SZ_UARTC
+                    int "Transmit Queue Buffer Size"
+                    default 256
+                config RX_QUEUE_BUFF_SZ_UARTC
+                    int "Receive Queue Buffer Size"
+                    default 128
+            endif
+    endif
+
+menuconfig USE_CLI
+    bool "CLI"
+    default y
+
+    if USE_CLI
+        config CLI_TASK_PRIORITY
+            int "Task Priority"
+            default 1
+        config CLI_TASK_STACK
+            int "Task Stack"
+            default 526
+
+        config CLI_ECHO_INPUT
+            bool "Echo Input String"
+            default n
+
+        choice
+            prompt "Input/Output Stream"
+            config CLI_IO_UART
+                bool "UART"
+        endchoice
+
+        choice
+            depends on CLI_IO_UART
+            prompt "UART Channel"
+            config CLI_IO_UART_A
+                depends on ENABLE_UARTA
+                bool "UART-A"
+            config CLI_IO_UART_B
+                depends on ENABLE_UARTB
+                bool "UART-B"
+            config CLI_IO_UART_C
+                depends on ENABLE_UARTC
+                bool "UART-C"
+        endchoice
+
+        config CLI_COMMAND_MAX_OUTPUT_SIZE
+            int "Buffer size for CLI output"
+            default 256
+
+        config CLI_COMMAND_MAX_INPUT_SIZE
+            int "Buffer size for CLI input"
+            default 256
+
+    endif # USE_CLI
+

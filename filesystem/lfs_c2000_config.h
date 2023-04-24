@@ -23,7 +23,7 @@
 #include <stdio.h>
 #endif
 
-#include "driver_def.h"
+#include "autoconf.h"
 #include <xdc/std.h>
 #include <xdc/runtime/System.h>
 

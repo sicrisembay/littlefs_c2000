@@ -25,7 +25,7 @@
  * 1 tab == 4 spaces!
  */
 
-#include "driver_def.h"
+#include "autoconf.h"
 
 #if defined( CONFIG_USE_CLI )
 

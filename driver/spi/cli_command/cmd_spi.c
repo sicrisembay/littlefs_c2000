@@ -1,4 +1,4 @@
-#include "driver_def.h"
+#include "autoconf.h"
 #include <limits.h>
 #include <stdbool.h>
 #include <stdlib.h>

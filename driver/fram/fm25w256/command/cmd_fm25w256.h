@@ -1,7 +1,7 @@
 #ifndef CMD_CLI_FM25W256_H
 #define CMD_CLI_FM25W256_H
 
-#include "driver_def.h"
+#include "autoconf.h"
 
 #if CONFIG_ENABLE_CLI_FM25W256_COMMAND
 

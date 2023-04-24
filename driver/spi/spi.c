@@ -1,4 +1,4 @@
-#include "driver_def.h"
+#include "autoconf.h"
 #include "cli_command/cmd_spi.h"
 #include <stdbool.h>
 #include <xdc/std.h>

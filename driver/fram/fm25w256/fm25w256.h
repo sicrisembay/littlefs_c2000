@@ -4,7 +4,7 @@
 #ifndef FM25W256_H
 #define FM25W256_H
 
-#include "driver_def.h"
+#include "autoconf.h"
 
 #if CONFIG_USE_SPI_FM25W256
 

@@ -27,7 +27,7 @@
 #ifndef FREERTOS_CLI_H
 #define FREERTOS_CLI_H
 
-#include "driver_def.h"
+#include "autoconf.h"
 
 #if defined (CONFIG_USE_CLI)
 

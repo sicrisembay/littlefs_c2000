@@ -1,0 +1,9 @@
+mainmenu "LittleFS_C2000"
+
+config SYSTEM_FREQ_MHZ
+    int
+    default 150
+
+rsource "../driver/uart/Kconfig"
+rsource "../driver/spi/Kconfig"
+rsource "../filesystem/Kconfig"
