@@ -1,0 +1,34 @@
+menuconfig USE_YMODEM
+    depends on USE_FILESYSTEM
+    bool "YMODEM"
+    default y
+
+    if USE_YMODEM
+        choice
+            depends on USE_UART
+            prompt "Channel"
+            config YMODEM_UART_A
+                depends on ENABLE_UARTA
+                bool "UART-A"
+            config YMODEM_UART_B
+                depends on ENABLE_UARTB
+                bool "UART-B"
+            config YMODEM_UART_C
+                depends on ENABLE_UARTC
+                bool "UART-C"
+        endchoice
+
+        menuconfig ENABLE_CLI_YMODEM_COMMAND
+            depends on USE_CLI
+            bool "Test Command"
+            default y
+
+            if ENABLE_CLI_YMODEM_COMMAND
+                config ENABLE_CLI_YMODEM_CMD_RECEIVE
+                    bool "ymodem_receive"
+                    default y
+                config ENABLE_CLI_YMODEM_CMD_SEND
+                    bool "ymodem_send"
+                    default y
+            endif
+    endif

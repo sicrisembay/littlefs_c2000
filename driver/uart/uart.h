@@ -31,5 +31,8 @@ UInt16 UART_send(UART_ID_T uart_id, Char * pBuf, UInt16 count);
 
 UInt16 UART_receive(UART_ID_T uart_id, Char * pBuf, UInt16 count);
 
+
+Bool UART_send_done(UART_ID_T uart_id);
+
 #endif /* CONFIG_USE_UART || __DOXYGEN__ */
 #endif /* DRIVER_UART_H */

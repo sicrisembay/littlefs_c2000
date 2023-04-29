@@ -74,6 +74,8 @@ Some very useful CLI commands are:
 | lfs_fclose               | This closes an opened file.                                                                                                                    |
 | lfs_mv [src] [dst]       | This moves/renames a file or directory from [src] to [dst]                                                                                     |
 | lfs_rm [src]             | This removes a file or an empty directory                                                                                                      |
+| ymodem_receive           | This receives a file from a YMODEM host and store it in the LittleFS filesystem                                                                |
+| ymodem_send [filename]   | This reads [filename] from LittleFS filesystem and send it to a YMODEM host                                                                    |
 
 ### Test01: Format
 First test is to format the FRAM using "lfs_format".  The superblock metadata pair (block0 and block1) is dump using lfs_dump.  Using the information from [SPEC.md](https://github.com/littlefs-project/littlefs/blob/master/SPEC.md), 
