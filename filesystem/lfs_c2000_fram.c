@@ -4,6 +4,9 @@
 
 #include "autoconf.h"
 #include "lfs.h"
+#include <ti/sysbios/gates/GateMutexPri.h>
+#include <xdc/runtime/Error.h>
+#include <xdc/runtime/Assert.h>
 #if CONFIG_USE_SPI_FM25W256
 #include "fram/fm25w256/fm25w256.h"
 #endif /* CONFIG_USE_SPI_FM25W256 */
@@ -14,6 +17,9 @@ static lfs_t lfs;
 static int bInit = 0;
 static int bMount = 0;
 static int bFileIsOpen = 0;
+static GateMutexPri_Handle lfs_mutex;
+static IArg mutex_key;
+static const char * tag = "lfs";
 
 #if CONFIG_USE_SPI_FM25W256
 #pragma DATA_SECTION(fm25w256Buffer, "DMARAM")
@@ -89,6 +95,21 @@ static int fram_sync(const struct lfs_config *c)
     return 0;
 }
 
+#ifdef LFS_THREADSAFE
+static int lock(const struct lfs_config *c)
+{
+    mutex_key = GateMutexPri_enter(lfs_mutex);
+    return 0;
+}
+
+
+static int unlock(const struct lfs_config *c)
+{
+    GateMutexPri_leave(lfs_mutex, mutex_key);
+    return 0;
+}
+#endif
+
 
 #define CONFIG_FRAM_LFS_CACHE_SIZE      (64)
 #define CONFIG_FRAM_LFS_BLOCK_COUNT     (CONFIG_SPI_FM25W256_SIZE / CONFIG_LFS_BLOCK_SZ)
@@ -101,12 +122,26 @@ static uint8_t lfs_lookAheadBuffer[CONFIG_FRAM_LFS_LOOKAHEAD_SIZE];
 static void lfs_c2000_init()
 {
     if(bInit == 0) {
+#ifdef LFS_THREADSAFE
+        Error_Block eb;
+        GateMutexPri_Params mutexParam;
+        Error_init(&eb);
+        GateMutexPri_Params_init(&mutexParam);
+        mutexParam.instance->name = tag;
+        lfs_mutex = GateMutexPri_create(&mutexParam, &eb);
+        Assert_isTrue((Error_check(&eb) == FALSE) && (lfs_mutex != NULL), NULL);
+#endif
+
         memset(&cfg, 0, sizeof(cfg));
         cfg.context = NULL;
         cfg.read = fram_read;
         cfg.prog = fram_prog;
         cfg.erase = fram_erase;
         cfg.sync = fram_sync;
+#ifdef LFS_THREADSAFE
+        cfg.lock = lock;
+        cfg.unlock = unlock;
+#endif
         cfg.read_size = CONFIG_LFS_READ_SZ;
         cfg.prog_size = CONFIG_LFS_PROG_SZ;
         cfg.block_size = CONFIG_LFS_BLOCK_SZ;
@@ -132,17 +167,19 @@ int lfs_c2000_format()
 }
 
 
-int lfs_c2000_mount()
+lfs_t * lfs_c2000_mount()
 {
-    int ret = LFS_ERR_OK;
+    int lfsRet = LFS_ERR_OK;
+    lfs_t * ret = NULL;
 
     if(bInit == 0) {
         lfs_c2000_init();
     }
 
-    ret = lfs_mount(&lfs, &cfg);
-    if(ret == LFS_ERR_OK) {
+    lfsRet = lfs_mount(&lfs, &cfg);
+    if(lfsRet == LFS_ERR_OK) {
         bMount = 1;
+        ret = &lfs;
     }
 
     return (ret);
@@ -168,7 +205,7 @@ int lfs_c2000_umount()
 
 int lfs_c2000_ls(const char * path, char * outBuffer, size_t bufferLen)
 {
-    char * tempStr[24];
+    char tempStr[24];
     if((bMount == 0) || (path == NULL) || (outBuffer == NULL)) {
         return -1;
     }
@@ -230,16 +267,19 @@ int lfs_c2000_mkdir(const char * path)
 }
 
 
-int lfs_c2000_fopen(const char * pathName)
+lfs_file_t * lfs_c2000_fopen(const char * pathName)
 {
-    int ret = 0;
+    int lfsRet = 0;
+    lfs_file_t * ret = NULL;
+
     if((bMount == 0) || (pathName == NULL) || (bFileIsOpen != 0)) {
-        return -1;
+        return NULL;
     }
 
-    ret = lfs_file_open(&lfs, &file, pathName, LFS_O_CREAT | LFS_O_RDWR);
-    if(ret == LFS_ERR_OK) {
+    lfsRet = lfs_file_open(&lfs, &file, pathName, LFS_O_CREAT | LFS_O_RDWR);
+    if(lfsRet == LFS_ERR_OK) {
         bFileIsOpen = 1;
+        ret = &file;
     } else {
         bFileIsOpen = 0;
     }

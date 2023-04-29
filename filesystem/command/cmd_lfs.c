@@ -176,7 +176,6 @@ static Int16 FuncLfsErase(char * write_buffer, size_t bufferLen, const char *com
     } else {
         internalState = 0;
         System_snprintf(write_buffer, bufferLen, "\r\n");
-        return 0;
     }
 
     return 0;
@@ -223,7 +222,7 @@ static Int16 FuncLfsMount(char * write_buffer, size_t bufferLen, const char *com
 {
     memset(write_buffer, 0, bufferLen);
 
-    if(lfs_c2000_mount() == LFS_ERR_OK) {
+    if(lfs_c2000_mount() != NULL) {
         System_snprintf(write_buffer, bufferLen,
                 "    OK\r\n\r\n");
     } else {
@@ -361,7 +360,7 @@ static Int16 FuncLfsFopen(char * write_buffer, size_t bufferLen, const char *com
         return 0;
     }
 
-    if(lfs_c2000_fopen(ptrStrParam) == LFS_ERR_OK) {
+    if(lfs_c2000_fopen(ptrStrParam) != NULL) {
         System_snprintf(write_buffer, bufferLen,
                 "    OK\r\n\r\n");
     } else {

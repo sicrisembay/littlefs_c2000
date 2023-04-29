@@ -43,6 +43,8 @@
 // macros must not have side-effects as the macros can be removed for a smaller
 // code footprint
 
+#define LFS_THREADSAFE
+
 // Logging functions
 #ifndef LFS_TRACE
 #ifdef LFS_YES_TRACE
@@ -221,14 +223,16 @@ static inline void c2000_uint32_to_buffer(uint32_t val, uint8_t * buffer)
     buffer[3] = (uint8_t)((val >> 24) & 0x000000FF);
 }
 
+typedef struct lfs lfs_t;
+typedef struct lfs_file lfs_file_t;
 
 int lfs_c2000_format();
-int lfs_c2000_mount();
+lfs_t * lfs_c2000_mount();
 int lfs_c2000_umount();
 int lfs_c2000_mkdir(const char * path);
 int lfs_c2000_ls(const char * path, char * outBuffer, size_t bufferLen);
 
-int lfs_c2000_fopen(const char * pathName);
+lfs_file_t * lfs_c2000_fopen(const char * pathName);
 int lfs_c2000_fwrite(const char * strData, size_t len);
 int lfs_c2000_fread(char * outBuffer, size_t bufLen);
 int lfs_c2000_mv(const char * source, const char * target);

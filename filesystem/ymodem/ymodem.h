@@ -24,23 +24,22 @@
  * in an action of contract, negligence or other tortious action,
  * arising out of or in connection with the use or performance of
  * this software.
+ *
+ * Date: 2023-April-24
+ * sicris.embay@gmail.com
+ *     Adopted for C2000 MCU and LittleFS
+ *
  */
 
 
 #ifndef __YMODEM_H__
 #define __YMODEM_H__
 
+#include "autoconf.h"
+
+#if CONFIG_USE_YMODEM
 #include <stdint.h>
-
-// === UART DEFINES ====
-#define EX_UART_NUM UART_NUM_0
-#define BUF_SIZE (1080)
-
-// === LED pin used to show transfer activity ===
-// === Set to 0 if you don't want to use it   ===
-#define YMODEM_LED_ACT 0
-#define YMODEM_LED_ACT_ON 1	// pin level for LED ON
-
+#include <stdio.h>
 
 // ==== Y-MODEM defines ====
 #define PACKET_SEQNO_INDEX      (1)
@@ -52,6 +51,7 @@
 #define PACKET_SIZE             (128)
 #define PACKET_1K_SIZE          (1024)
 
+#define FILE_NAME_LENGTH        (64)
 #define FILE_SIZE_LENGTH        (16)
 
 #define SOH                     (0x01)  /* start of 128-byte data packet */
@@ -70,8 +70,8 @@
 
 #define YM_MAX_FILESIZE         (10*1024*1024)
 
-int Ymodem_Receive (FILE *ffd, unsigned int maxsize, char* getname);
+int Ymodem_Receive (FILE *ffd, uint32_t maxsize, char* getname);
 int Ymodem_Transmit (char* sendFileName, unsigned int sizeFile, FILE *ffd);
 
-
-#endif
+#endif  /* CONFIG_USE_YMODEM */
+#endif  /* __YMODEM_H__ */

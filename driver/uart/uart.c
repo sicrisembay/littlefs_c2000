@@ -339,4 +339,12 @@ UInt16 UART_receive(UART_ID_T uart_id, Char * pBuf, UInt16 count)
     return i;
 }
 
+
+#pragma CODE_SECTION(UART_send_done, "ramfuncs");
+Bool UART_send_done(UART_ID_T uart_id)
+{
+    return ((ring_buffer_is_empty(&(ringBuf_tx[uart_id]))) &&
+            (SCI_REG_PTR[uart_id]->SCIFFTX.bit.TXFFST == 0));
+}
+
 #endif /* CONFIG_USE_UART || __DOXYGEN__ */

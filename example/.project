@@ -97,6 +97,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>filesystem/ymodem</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/filesystem/ymodem</locationURI>
+		</link>
+		<link>
 			<name>third_party/FreeRTOS-Plus-CLI</name>
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/third_party/FreeRTOS-Plus-CLI</locationURI>
