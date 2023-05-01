@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+message SimpleTest {
+    int32 test_value = 1;
+}

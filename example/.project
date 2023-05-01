@@ -97,6 +97,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>filesystem/protobuf</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/filesystem/protobuf</locationURI>
+		</link>
+		<link>
 			<name>filesystem/ymodem</name>
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/filesystem/ymodem</locationURI>
@@ -105,6 +110,11 @@
 			<name>third_party/FreeRTOS-Plus-CLI</name>
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/third_party/FreeRTOS-Plus-CLI</locationURI>
+		</link>
+		<link>
+			<name>third_party/nanopb</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
 			<name>filesystem/littlefs/lfs.c</name>
@@ -125,6 +135,36 @@
 			<name>filesystem/littlefs/lfs_util.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/filesystem/littlefs/lfs_util.h</locationURI>
+		</link>
+		<link>
+			<name>third_party/nanopb/pb_common.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/third_party/nanopb/pb_common.c</locationURI>
+		</link>
+		<link>
+			<name>third_party/nanopb/pb_common.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/third_party/nanopb/pb_common.h</locationURI>
+		</link>
+		<link>
+			<name>third_party/nanopb/pb_decode.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/third_party/nanopb/pb_decode.c</locationURI>
+		</link>
+		<link>
+			<name>third_party/nanopb/pb_decode.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/third_party/nanopb/pb_decode.h</locationURI>
+		</link>
+		<link>
+			<name>third_party/nanopb/pb_encode.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/third_party/nanopb/pb_encode.c</locationURI>
+		</link>
+		<link>
+			<name>third_party/nanopb/pb_encode.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/third_party/nanopb/pb_encode.h</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

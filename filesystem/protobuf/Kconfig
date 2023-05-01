@@ -1,0 +1,3 @@
+menuconfig PROTOBUF_TEST
+    bool "Protobuf Test"
+    default n

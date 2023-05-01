@@ -67,7 +67,7 @@ static Int16 FuncYmodemSend(char * write_buffer, size_t bufferLen, const char *c
                 "\r\n    Error %d\r\n\r\n", ret);
     } else {
         System_snprintf(write_buffer, bufferLen,
-                "\r\n    %d bytes sent\r\n\r\n", (16384 - ret));
+                "\r\n    %s sent\r\n\r\n", ptrStrParam);
     }
     return 0;
 }

@@ -43,6 +43,7 @@ menuconfig USE_FILESYSTEM
             endif # USE_LITTLEFS
 
     rsource "ymodem/Kconfig"
+    rsource "protobuf/Kconfig"
 
 
     endif # USE_FILESYSTEM

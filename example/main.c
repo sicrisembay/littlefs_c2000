@@ -17,6 +17,7 @@
 #include "fram/fm25w256/fm25w256.h"
 #include "cmd_lfs.h"
 #include "ymodem/command/cmd_ymodem.h"
+#include "protobuf/command/cmd_protobuf.h"
 
 
 extern unsigned int RamfuncsLoadStart;
@@ -50,6 +51,10 @@ Void taskFxn(UArg a0, UArg a1)
 #endif
 #if CONFIG_ENABLE_CLI_YMODEM_COMMAND
     CMD_YMODEM_init();
+#endif
+
+#if CONFIG_PROTOBUF_TEST
+    CMD_PBTEST_init();
 #endif
 
     System_printf("running taskFxn()\n");
